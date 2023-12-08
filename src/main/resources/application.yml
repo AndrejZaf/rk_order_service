@@ -1,0 +1,17 @@
+server:
+  port: 8084
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/rk_order
+    username: postgres
+    password: user
+  jpa:
+    generate-ddl: true
+  application:
+    name: rk-order-service
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
