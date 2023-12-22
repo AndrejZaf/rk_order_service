@@ -33,11 +33,11 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
-    private Order createOrder(CreateOrderDTO createOrderDTO) {
-        final Double totalPrice = createOrderDTO.getSneakers().stream()
-                .map(SneakerDTO::getPrice)
-                .reduce(Double::sum)
-                .orElseThrow(IllegalArgumentException::new);
+    private Order createOrder(final CreateOrderDTO createOrderDTO) {
+        final List<Long> sneakerIds = createOrderDTO.getSneakers().stream()
+                .map(SneakerDTO::getId)
+                .toList();
+        final Double totalPrice = externalSneakerService.getTotalPrice(sneakerIds);
         return Order.builder()
                 .totalPrice(totalPrice)
                 .orderStatus(OrderStatus.ORDER_STOCK_RESERVED)

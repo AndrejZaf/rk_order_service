@@ -7,4 +7,6 @@ import java.util.List;
 public interface ExternalSneakerService {
 
     void reserve(List<SneakerDTO> sneakers);
+
+    Double getTotalPrice(List<Long> sneakerIds);
 }

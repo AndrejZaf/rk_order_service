@@ -1,8 +1,6 @@
 package rarekickz.rk_order_service.external.impl;
 
-import com.rarekickz.proto.lib.ReserveSneakersRequest;
-import com.rarekickz.proto.lib.SneakerRequest;
-import com.rarekickz.proto.lib.SneakerServiceGrpc;
+import com.rarekickz.proto.lib.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import net.devh.boot.grpc.client.inject.GrpcClient;
@@ -19,7 +17,7 @@ public class ExternalSneakerServiceImpl implements ExternalSneakerService {
     private final SneakerServiceGrpc.SneakerServiceBlockingStub sneakerServiceBlockingStub;
 
     public ExternalSneakerServiceImpl() {
-        ManagedChannel managedChannel = ManagedChannelBuilder
+        final ManagedChannel managedChannel = ManagedChannelBuilder
                 .forAddress("localhost", 9090)
                 .usePlaintext()
                 .build();
@@ -35,9 +33,18 @@ public class ExternalSneakerServiceImpl implements ExternalSneakerService {
                         .setSneakerSize(sneakerDTO.getSize())
                         .build())
                 .toList();
-        ReserveSneakersRequest reserveSneakersRequest = ReserveSneakersRequest.newBuilder()
+        final ReserveSneakersRequest reserveSneakersRequest = ReserveSneakersRequest.newBuilder()
                 .addAllSneakers(sneakerRequests)
                 .build();
         sneakerServiceBlockingStub.reserve(reserveSneakersRequest);
+    }
+
+    @Override
+    public Double getTotalPrice(List<Long> sneakerIds) {
+        final SneakerIdsRequest sneakerIdsRequest = SneakerIdsRequest.newBuilder()
+                .addAllSneakerId(sneakerIds)
+                .build();
+        final OrderTotalPriceResponse orderTotalPrice = sneakerServiceBlockingStub.getSneakerPrice(sneakerIdsRequest);
+        return orderTotalPrice.getPrice();
     }
 }
