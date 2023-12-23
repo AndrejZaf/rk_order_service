@@ -7,11 +7,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "order_inventory")
 public class OrderInventory {
 
@@ -21,6 +23,9 @@ public class OrderInventory {
 
     @Column(name = "sneaker_id", nullable = false)
     private Long sneakerId;
+
+    @Column(name = "sneaker_size", nullable = false)
+    private Double sneakerSize;
 
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)

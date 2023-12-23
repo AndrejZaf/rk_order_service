@@ -16,16 +16,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import rarekickz.rk_order_service.enums.OrderStatus;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "rk_order")
+@Entity(name = "`order`")
 public class Order {
 
     @Id
@@ -39,9 +41,14 @@ public class Order {
     @Column(name = "order_status", nullable = false)
     private OrderStatus orderStatus;
 
+    @Builder.Default
+    @Column(unique = true, nullable = false, columnDefinition = "uuid")
+    private UUID uuid = UUID.randomUUID();
+
     @OneToOne
     @JoinColumn(name = "delivery_info_id", referencedColumnName = "id")
     private DeliveryInfo deliveryInfo;
+
 
     @OneToMany(mappedBy = "order")
     private Set<OrderInventory> orderInventory;

@@ -7,5 +7,4 @@ public class SneakerDTO {
 
     private Long id;
     private Double size;
-    private Double price;
 }
